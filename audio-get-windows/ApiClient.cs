@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Net.Http;
 using System.Net;
 
-namespace BilibiliAudioGet
+namespace AudioGet
 {
-    class Http
+    class ApiClient
     {
-        public int DownloadSize { get; set; } = 0;
-
+        // 对指定 URL 发起 GET 请求
         public async Task<string> GetFromUrl(string url)
         {
-
             HttpClient client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip });
             client.DefaultRequestHeaders.Add("User-Agent", "BilibiliAudioGet/2.33.33");
             try
@@ -25,10 +20,11 @@ namespace BilibiliAudioGet
             }
             catch
             {
-               return "{\"code\":404}";
+                return "{\"code\":404}";
             }
         }
 
+        // 从指定 URL 下载内容
         public async Task<string> DownloadFormUrl(string url, string path)
         {
             HttpClient client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip });

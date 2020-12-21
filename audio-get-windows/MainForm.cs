@@ -13,11 +13,11 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace BilibiliAudioGet
+namespace AudioGet
 {
     public partial class MainForm : Form
     {
-        private readonly API api = new API();
+        private readonly ApiService api = new ApiService();
         private bool isMouseDown = false;
         private Point FormLocation;
         private Point mouseOffset;
@@ -26,10 +26,8 @@ namespace BilibiliAudioGet
         {
             InitializeComponent();
             IgnoreDPI();
-            api.Update += new API.UpdateStatus(UpdateLabel);
+            api.Update += new ApiService.UpdateStatus(UpdateLabel);
         }
-
-
 
         private async void Add_Click(object sender, EventArgs e)
         {
@@ -44,7 +42,7 @@ namespace BilibiliAudioGet
 
 
                     string name = "";
-                    name = await api.GetSingle(id);
+                    name = await api.GetSingleAudioInfo(id);
                     if (name != "")
                     {
                         DownloadList.Items.Add(name);
@@ -58,7 +56,7 @@ namespace BilibiliAudioGet
                     id = id.Replace("audio/am", "");
 
                     List<string> nameList = new List<string>();
-                    nameList = await api.GetPlayList(id);
+                    nameList = await api.GetPlayListInfo(id);
                     if (nameList.Count() != 0)
                     {
                         foreach (string name in nameList)
@@ -83,8 +81,8 @@ namespace BilibiliAudioGet
             if (DownloadList.Items.Count != 0)
             {
                 Download.Enabled = false;
-                string appPath = Application.StartupPath;
-                await api.DownloadAll(appPath);
+                string appBasePath = Application.StartupPath;
+                await api.DownloadAll(appBasePath);
                 Download.Enabled = true;
             }
 

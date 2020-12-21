@@ -1,4 +1,4 @@
-﻿namespace BilibiliAudioGet
+﻿namespace AudioGet
 {
     partial class MainForm
     {
@@ -143,7 +143,7 @@
             // 
             // GithubBox
             // 
-            this.GithubBox.Image = global::BilibiliAudioGet.Properties.Resources.github;
+            this.GithubBox.Image = global::AudioGet.Properties.Resources.github;
             this.GithubBox.ImageLocation = "";
             this.GithubBox.Location = new System.Drawing.Point(827, 12);
             this.GithubBox.Name = "GithubBox";
@@ -155,7 +155,7 @@
             // 
             // Close
             // 
-            this.Close.Image = global::BilibiliAudioGet.Properties.Resources.CloseW;
+            this.Close.Image = global::AudioGet.Properties.Resources.CloseW;
             this.Close.Location = new System.Drawing.Point(918, 6);
             this.Close.Name = "Close";
             this.Close.Size = new System.Drawing.Size(47, 48);
@@ -166,7 +166,7 @@
             // Minimize
             // 
             this.Minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Minimize.Image = global::BilibiliAudioGet.Properties.Resources.MinimizeW;
+            this.Minimize.Image = global::AudioGet.Properties.Resources.MinimizeW;
             this.Minimize.Location = new System.Drawing.Point(865, 6);
             this.Minimize.Name = "Minimize";
             this.Minimize.Size = new System.Drawing.Size(47, 48);

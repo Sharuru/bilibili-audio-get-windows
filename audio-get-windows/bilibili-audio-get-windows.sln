@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BilibiliAudioGet", "BilibiliAudioGet.csproj", "{074834E0-AC36-40D2-BE92-B1DAF36713E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bilibili-audio-get-windows", "bilibili-audio-get-windows.csproj", "{074834E0-AC36-40D2-BE92-B1DAF36713E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
