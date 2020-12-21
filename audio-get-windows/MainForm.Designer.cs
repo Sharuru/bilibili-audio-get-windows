@@ -54,7 +54,7 @@
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(196, 72);
             this.Add.TabIndex = 2;
-            this.Add.Text = "Add Song";
+            this.Add.Text = "Add Song / Playlist";
             this.Add.UseVisualStyleBackColor = false;
             this.Add.Click += new System.EventHandler(this.Add_Click);
             // 
@@ -126,9 +126,9 @@
             this.Label.ForeColor = System.Drawing.SystemColors.GrayText;
             this.Label.Location = new System.Drawing.Point(37, 14);
             this.Label.Name = "Label";
-            this.Label.Size = new System.Drawing.Size(155, 20);
+            this.Label.Size = new System.Drawing.Size(79, 20);
             this.Label.TabIndex = 12;
-            this.Label.Text = "BilibiliAudioGet 1.03";
+            this.Label.Text = "AudioGet";
             // 
             // StatusLabel
             // 

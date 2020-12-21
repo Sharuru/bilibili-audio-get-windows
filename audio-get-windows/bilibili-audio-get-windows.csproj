@@ -68,7 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiService.cs" />
+    <Compile Include="AppService.cs" />
     <Compile Include="ApiClient.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

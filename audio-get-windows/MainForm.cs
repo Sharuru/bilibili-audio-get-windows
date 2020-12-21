@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace AudioGet
 {
     public partial class MainForm : Form
     {
-        private readonly ApiService api = new ApiService();
+        private readonly AppService appService = new AppService();
         private bool isMouseDown = false;
         private Point FormLocation;
         private Point mouseOffset;
@@ -26,7 +19,7 @@ namespace AudioGet
         {
             InitializeComponent();
             IgnoreDPI();
-            api.Update += new ApiService.UpdateStatus(UpdateLabel);
+            appService.Update += new AppService.UpdateStatus(UpdateLabel);
         }
 
         private async void Add_Click(object sender, EventArgs e)
@@ -42,7 +35,7 @@ namespace AudioGet
 
 
                     string name = "";
-                    name = await api.GetSingleAudioInfo(id);
+                    name = await appService.GetSingleAudioInfo(id);
                     if (name != "")
                     {
                         DownloadList.Items.Add(name);
@@ -56,7 +49,7 @@ namespace AudioGet
                     id = id.Replace("audio/am", "");
 
                     List<string> nameList = new List<string>();
-                    nameList = await api.GetPlayListInfo(id);
+                    nameList = await appService.GetPlayListInfo(id);
                     if (nameList.Count() != 0)
                     {
                         foreach (string name in nameList)
@@ -82,7 +75,7 @@ namespace AudioGet
             {
                 Download.Enabled = false;
                 string appBasePath = Application.StartupPath;
-                await api.DownloadAll(appBasePath);
+                await appService.DownloadAll(appBasePath);
                 Download.Enabled = true;
             }
 
@@ -90,7 +83,7 @@ namespace AudioGet
 
         public void UpdateLabel()
         {
-            StatusLabel.Text = api.DownloadStatus;
+            StatusLabel.Text = appService.DownloadStatus;
         }
 
         private void RemoveSelected_Click(object sender, EventArgs e)
@@ -100,7 +93,7 @@ namespace AudioGet
             {
 
                 DownloadList.Items.Remove(DownloadList.SelectedItem);
-                api.Remove(index);
+                appService.Remove(index);
             }
         }
 
@@ -109,7 +102,7 @@ namespace AudioGet
             if (DownloadList.Items.Count != 0)
             {
                 DownloadList.Items.Clear();
-                api.RemoveAll();
+                appService.RemoveAll();
             }
         }
 

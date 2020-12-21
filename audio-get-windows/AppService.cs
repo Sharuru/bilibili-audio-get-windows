@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AudioGet
 {
-    class ApiService
+    class AppService
     {
         public delegate void UpdateStatus();
         public event UpdateStatus Update;
@@ -46,7 +46,7 @@ namespace AudioGet
                 string path = basePath + validCollectionName + "/" + validAudioName + i + ".m4a";
                 while (File.Exists(path))
                 {
-                    // SKIP!
+                    // TODO: SKIP!
                     j++;
                     i = j.ToString();
                     path = basePath + validCollectionName + "/" + validAudioName + i + ".m4a";
@@ -177,12 +177,10 @@ namespace AudioGet
                     if (audioInfo["code"].ToString() == "0")
                     {
                         // 尝试取得音频所属合辑
-                        try
-                        {
-                            collectionName = audioInfo["data"]["title"].ToString();
-                        }catch (Exception)
+                        if (audioInfo["data"].Type == JTokenType.Null)
                         {
                             // 无法取得的情况使用老 API 取得
+                            Console.WriteLine("Get audio info from old API.");
                             string oldAudioInfoEndpoint = "https://www.bilibili.com/audio/music-service-c/web/song/info?sid=";
                             string oldAudioInfoApiLink = oldAudioInfoEndpoint + audioId;
                             string oldAudioInfoJson = await ApiClient.GetFromUrl(oldAudioInfoApiLink);
@@ -191,6 +189,10 @@ namespace AudioGet
                             {
                                 collectionName = oldAudioInfo["data"]["title"].ToString();
                             }
+                        }
+                        else
+                        {
+                            collectionName = audioInfo["data"]["title"].ToString();
                         }
                     }
 
