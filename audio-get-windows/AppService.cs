@@ -32,7 +32,6 @@ namespace AudioGet
                 string downloadLink = audioInfo["data"]["cdns"][0].ToString();
 
                 string i = "";
-                int j = 0;
 
                 // 不合法路径转换
                 string validCollectionName = new string(audioDetailInfo.collection.Select(ch => invalidFileNameChars.Contains(ch) ? '_' : ch).ToArray());
