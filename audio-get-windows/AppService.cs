@@ -44,15 +44,15 @@ namespace AudioGet
                 }
 
                 string path = basePath + validCollectionName + "/" + validAudioName + i + ".m4a";
-                while (File.Exists(path))
+                if (File.Exists(path))
                 {
-                    // TODO: SKIP!
-                    j++;
-                    i = j.ToString();
-                    path = basePath + validCollectionName + "/" + validAudioName + i + ".m4a";
+                    Console.WriteLine("SKIP: " + path);
                 }
-
-                await ApiClient.DownloadFormUrl(downloadLink, path);
+                else
+                {
+                    Console.WriteLine("DOWNLOAD: " + path);
+                    await ApiClient.DownloadFormUrl(downloadLink, path);
+                }
             }
             else
             {
