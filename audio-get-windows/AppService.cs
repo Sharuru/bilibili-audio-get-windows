@@ -16,15 +16,16 @@ namespace AudioGet
         private readonly AudioList AudioList = new AudioList();
 
         public string DownloadStatus { get; set; } = "";
+        public int DownloadProgress { get; set; } = 0;
 
         static readonly char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
 
-        private async Task<int> DownloadAudio(string audioId, AudioDetailInfo audioDetailInfo, string basePath)
+        private async Task<int> DownloadAudio(string audioId, AudioDetailInfo audioDetailInfo, string basePath, string index)
         {
             string endpoint = "http://api.bilibili.com/audio/music-service-c/url?mid=1&mobi_app=iphone&platform=ios&privilege=2&quality=2&songid=";
             string audioInfoApiLink = endpoint + audioId;
             string audioInfoJson = await ApiClient.GetFromUrl(audioInfoApiLink);
-            
+
             JObject audioInfo = JObject.Parse(audioInfoJson);
 
             if (audioInfo["code"].ToString() == "0")
@@ -45,11 +46,15 @@ namespace AudioGet
                 string path = basePath + validCollectionName + "/" + validAudioName + i + ".m4a";
                 if (File.Exists(path))
                 {
-                    Console.WriteLine("SKIP: " + path);
+                    Console.WriteLine("SKIP: " + path + index);
+                    DownloadStatus = "[SKIP] " + audioDetailInfo.Info() + index;
+                    Update();
                 }
                 else
                 {
-                    Console.WriteLine("DOWNLOAD: " + path);
+                    Console.WriteLine("DOWNLOAD: " + path + index);
+                    DownloadStatus = "[DOWNLOAD] " + path + index;
+                    Update();
                     await ApiClient.DownloadFormUrl(downloadLink, path);
                 }
             }
@@ -80,22 +85,23 @@ namespace AudioGet
                     string index = " ( " + i.ToString() + " / " + all.ToString() + " )";
                     string id = item.Key;
                     AudioDetailInfo songDetailInfo = item.Value;
-                    DownloadStatus = "Downloading: " + songDetailInfo.Info() + index;
+                    DownloadStatus = "[START] " + songDetailInfo.Info() + index;
                     Update();
-                    Status = await DownloadAudio(id, songDetailInfo, downloadBasePath);
+                    Status = await DownloadAudio(id, songDetailInfo, downloadBasePath, index);
 
                     if (Status == 200)
                     {
-                        DownloadStatus = "Download Completed: " + songDetailInfo.Info() + index;
+                        DownloadStatus = "[COMPLETE] " + songDetailInfo.Info() + index;
                     }
                     else if (Status == 404)
                     {
-                        DownloadStatus = "Download Failed: " + songDetailInfo.Info() + " has been removed." + index;
+                        DownloadStatus = "[ERROR] " + songDetailInfo.Info() + " has been removed." + index;
                     }
                     else if (Status == 503)
                     {
-                        DownloadStatus = "Download Failed: API Error" + index;
+                        DownloadStatus = "[ERROR] " + index;
                     }
+                    DownloadProgress = (int)(((double)i / (double)all) * 100);
                     Update();
                     i = i + 1;
                 }
@@ -106,7 +112,7 @@ namespace AudioGet
                 DownloadStatus = e.Message;
                 Update();
                 return false;
-            } 
+            }
         }
 
         public async Task<string> GetSingleAudioInfo(string audioId)
@@ -129,7 +135,7 @@ namespace AudioGet
             }
             else
             {
-                DownloadStatus = "Audio Not Found";
+                DownloadStatus = "[ERROR] Audio Not Found";
                 Update();
             }
             return "";
@@ -144,11 +150,11 @@ namespace AudioGet
             if (playListInfo["code"].ToString() == "0")
             {
                 string title = playListInfo["data"]["title"].ToString();
-                DownloadStatus = "PlayList: " + title;
+                DownloadStatus = "[ADD] PlayList: " + title;
             }
             else if (playListInfo["code"].ToString() == "72000000")
             {
-                DownloadStatus = "PlayList Not Found";
+                DownloadStatus = "[INFO] PlayList Not Found";
             }
             Update();
 
@@ -156,7 +162,7 @@ namespace AudioGet
             string playListDetailEndpoint = "https://www.bilibili.com/audio/music-service-c/web/song/of-menu?pn=1&ps=1000&sid=";
             string playListDetailLink = playListDetailEndpoint + playListId;
             string playListDetailJson = await ApiClient.GetFromUrl(playListDetailLink);
-            JObject playListDetail = JObject.Parse (playListDetailJson);
+            JObject playListDetail = JObject.Parse(playListDetailJson);
 
             if (playListDetail["code"].ToString() == "0")
             {
@@ -198,9 +204,10 @@ namespace AudioGet
                     if (AudioList.AudioDict.ContainsKey(audioId) == false)
                     {
                         Console.WriteLine("ADD： " + audioId + " / " + collectionName + " / " + audioName + " / " + audioArtist);
+                        DownloadStatus = "[ADD] " + audioId + " / " + collectionName + " / " + audioName + " / " + audioArtist;
+                        Update();
                         audioNameList.Add(audioId + " / " + collectionName + " / " + audioName + " / " + audioArtist);
-
-                        AudioDetailInfo info = new AudioDetailInfo(audioName,audioArtist, collectionName);
+                        AudioDetailInfo info = new AudioDetailInfo(audioName, audioArtist, collectionName);
                         AudioList.Add(audioId, info);
                     }
                 }

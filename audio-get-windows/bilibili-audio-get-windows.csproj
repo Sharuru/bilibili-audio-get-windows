@@ -107,18 +107,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\favicon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CloseW.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\github.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MinimizeW.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
