@@ -103,7 +103,7 @@ namespace AudioGet
                     }
                     DownloadProgress = (int)(((double)i / (double)all) * 100);
                     Update();
-                    i = i + 1;
+                    i += 1;
                 }
                 return true;
             }

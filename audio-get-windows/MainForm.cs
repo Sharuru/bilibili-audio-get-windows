@@ -17,8 +17,7 @@ namespace AudioGet
         public MainForm()
         {
             InitializeComponent();
-            appService.Update += new AppService.UpdateStatus(UpdateLabel);
-            appService.Update += new AppService.UpdateStatus(UpdateBar);
+            appService.Update += new AppService.UpdateStatus(UpdateUI);
         }
 
         private async void Add_Click(object sender, EventArgs e)
@@ -80,15 +79,11 @@ namespace AudioGet
 
         }
 
-        public void UpdateLabel()
+        public void UpdateUI()
         {
             logTextBox.Text += appService.DownloadStatus + Environment.NewLine;
             logTextBox.SelectionStart = logTextBox.Text.Length;
             logTextBox.ScrollToCaret();
-        }
-
-        public void UpdateBar()
-        {
             progressBar.Value = appService.DownloadProgress;
         }
 
@@ -109,17 +104,10 @@ namespace AudioGet
             {
                 DownloadList.Items.Clear();
                 appService.RemoveAll();
+                logTextBox.Clear();
             }
         }
 
-        public void WriteLog(string logText)
-        {
-            Action showUi = () => {
-                logTextBox.Text += logText + Environment.NewLine;
-            };
-            logTextBox.Invoke(showUi);
-            //logTextBox.Text += logText + Environment.NewLine;
-        }
     }
 
 }
